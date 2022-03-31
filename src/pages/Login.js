@@ -21,10 +21,11 @@ class Login extends React.Component {
     });
   }
 
+  // Função agregada ao botão submit
   submitLogin = () => {
     const { email } = this.state;
-    const { history, dispatchEmailPasswordValues } = this.props;
-    dispatchEmailPasswordValues(email);
+    const { history, dispatchEmailValue } = this.props;
+    dispatchEmailValue(email);
     history.push('/carteira');
   }
 
@@ -33,8 +34,9 @@ class Login extends React.Component {
     const REGEX_EMAIL = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/; // email validation
     const minLengthPassword = 6;
     const checkLength = password.length;
-
-    return !REGEX_EMAIL.test(email) || checkLength < minLengthPassword;
+    // false || false;  false
+    const checkDisabled = !REGEX_EMAIL.test(email) || checkLength < minLengthPassword;
+    return checkDisabled;
   }
 
   render() {
@@ -72,14 +74,14 @@ class Login extends React.Component {
 }
 
 Login.propTypes = {
-  dispatchEmailPasswordValues: PropTypes.string.isRequired,
+  dispatchEmailValue: PropTypes.func.isRequired,
   history: PropTypes.shape({
-    push: PropTypes.string,
+    push: PropTypes.func,
   }).isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  dispatchEmailPasswordValues: (payload) => dispatch(saveLoginAction(payload)),
+  dispatchEmailValue: (payload) => dispatch(saveLoginAction(payload)),
 });
 
 export default connect(null, mapDispatchToProps)(Login);
