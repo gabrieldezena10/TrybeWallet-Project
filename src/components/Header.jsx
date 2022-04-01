@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 class Header extends Component {
   render() {
-    const { emailInput } = this.props;
+    const { emailInput, expenses } = this.props;
     return (
       <header>
         <span data-testid="email-field">
@@ -28,6 +28,7 @@ Header.propTypes = {
 
 const mapStateToProps = (state) => ({
   emailInput: state.user.email,
+  expenses: state.wallet.expenses,
 });
 
 export default connect(mapStateToProps)(Header);

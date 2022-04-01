@@ -2,8 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
-import { fetchCurrencyData } from '../actions';
 import ExpensesForm from '../components/ExpensesForm';
+import ExpensesTable from '../components/ExpensesTable';
+import { fetchCurrencyKeys } from '../actions';
 
 class Wallet extends React.Component {
 componentDidMount = () => {
@@ -16,6 +17,7 @@ render() {
     <>
       <Header />
       <ExpensesForm />
+      <ExpensesTable />
     </>
 
   );
@@ -27,7 +29,8 @@ Wallet.propTypes = {
 }.isRequired;
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchCurrency: () => dispatch(fetchCurrencyData()),
+  fetchCurrency: () => dispatch(fetchCurrencyKeys()),
+
 });
 
 export default connect(null, mapDispatchToProps)(Wallet);

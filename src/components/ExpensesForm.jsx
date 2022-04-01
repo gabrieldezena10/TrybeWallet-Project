@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { setExpensesAction } from '../actions/index';
 
 class ExpensesForm extends Component {
   constructor() {
@@ -20,6 +21,12 @@ class ExpensesForm extends Component {
     this.setState({
       [name]: value,
     });
+  }
+
+  submitExpenses = (event) => {
+    event.preventdefault();
+    const { dispatchFormValues } = this.props;
+    dispatchFormValues(this.state);
   }
 
   render() {
@@ -50,14 +57,16 @@ class ExpensesForm extends Component {
             value={ coin }
             onChange={ this.handleChange }
           >
-            {currencies.map((money, index) => (
-              <option
-                key={ index }
-                value={ money }
-              >
-                {money}
-              </option>
-            ))}
+            {currencies
+              .filter((tether) => tether !== 'USDT')
+              .map((money, index) => (
+                <option
+                  key={ index }
+                  value={ money }
+                >
+                  {money}
+                </option>
+              ))}
           </select>
         </label>
 
@@ -113,6 +122,12 @@ class ExpensesForm extends Component {
           />
         </label>
 
+        <button
+          type="submit"
+          onClick={ this.submitExpenses }
+        >
+          Adicionar despesa
+        </button>
       </form>
     );
   }
@@ -122,10 +137,15 @@ const mapStateToProps = (state) => ({
   currencies: state.wallet.currencies,
 });
 
+const mapDispatchToProps = (dispatch) => ({
+  dispatchFormValues: (payload) => dispatch(setExpensesAction(payload)),
+});
+
 ExpensesForm.propTypes = {
+  dispatchFormValues: PropTypes.func.isRequired,
   currencies: PropTypes.arrayOf(
     PropTypes.string.isRequired,
   ).isRequired,
 };
 
-export default connect(mapStateToProps)(ExpensesForm);
+export default connect(mapStateToProps, mapDispatchToProps)(ExpensesForm);
