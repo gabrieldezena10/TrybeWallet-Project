@@ -37,6 +37,7 @@ class ExpensesForm extends Component {
     this.setState({
       id: id += 1,
       value: '',
+      description: '',
     });
   };
 
