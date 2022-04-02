@@ -25,21 +25,20 @@ class ExpensesForm extends Component {
     });
   }
 
-  submitExpenses = () => {
+  submitExpenses = async () => {
     const { dispatchFormValues, fetchCurrencyData, data } = this.props;
-    fetchCurrencyData();
     let { id } = this.state;
     this.setState({
       exchangeRates: data,
-    }, () => {
-      dispatchFormValues(this.state);
-      this.setState({
-        value: '',
-        description: '',
-        id: id += 1,
-      });
     });
-  }
+    await fetchCurrencyData();
+    dispatchFormValues(this.state);
+
+    this.setState({
+      id: id += 1,
+      value: '',
+    });
+  };
 
   render() {
     const { value, description, currency, method, tag } = this.state;
