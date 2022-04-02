@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 
 class ExpensesTable extends Component {
   render() {
-    const { expenses } = this.props;
     return (
       <table>
         <thead>
@@ -19,8 +18,7 @@ class ExpensesTable extends Component {
             <th>Editar/Excluir</th>
           </tr>
         </thead>
-        <tbody>
-        </tbody>
+        <tbody />
       </table>
     );
   }
