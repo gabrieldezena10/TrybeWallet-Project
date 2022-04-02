@@ -1,18 +1,20 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { setExpensesAction } from '../actions/index';
+import { setExpensesAction, fetchCurrencyKeys } from '../actions/index';
 
 class ExpensesForm extends Component {
   constructor() {
     super();
 
     this.state = {
-      amount: '',
-      coin: '',
-      payment: '',
-      tag: '',
+      id: 0,
+      value: '',
+      currency: 'USD',
+      method: 'Dinheiro',
+      tag: 'Alimentação',
       description: '',
+      exchangeRates: '',
     };
   }
 
@@ -23,14 +25,24 @@ class ExpensesForm extends Component {
     });
   }
 
-  submitExpenses = (event) => {
-    event.preventdefault();
-    const { dispatchFormValues } = this.props;
-    dispatchFormValues(this.state);
+  submitExpenses = () => {
+    const { dispatchFormValues, fetchCurrencyData, data } = this.props;
+    fetchCurrencyData();
+    let { id } = this.state;
+    this.setState({
+      exchangeRates: data,
+    }, () => {
+      dispatchFormValues(this.state);
+      this.setState({
+        value: '',
+        description: '',
+        id: id += 1,
+      });
+    });
   }
 
   render() {
-    const { amount, description, coin, payment, tag } = this.state;
+    const { value, description, currency, method, tag } = this.state;
     const { currencies } = this.props;
     const payments = ['Dinheiro', 'Cartão de crédito', 'Cartão de débito'];
     const expensesCat = ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'];
@@ -42,8 +54,8 @@ class ExpensesForm extends Component {
             data-testid="value-input"
             id="currency-value"
             type="number"
-            name="amount"
-            value={ amount }
+            name="value"
+            value={ value }
             onChange={ this.handleChange }
           />
         </label>
@@ -53,12 +65,11 @@ class ExpensesForm extends Component {
           <select
             data-testid="currency-input"
             id="coin"
-            name="coin"
-            value={ coin }
+            name="currency"
+            value={ currency }
             onChange={ this.handleChange }
           >
             {currencies
-              .filter((tether) => tether !== 'USDT')
               .map((money, index) => (
                 <option
                   key={ index }
@@ -75,8 +86,8 @@ class ExpensesForm extends Component {
           <select
             data-testid="method-input"
             id="method"
-            name="payment"
-            value={ payment }
+            name="method"
+            value={ method }
             onChange={ this.handleChange }
           >
             {payments.map((pay, index) => (
@@ -123,8 +134,8 @@ class ExpensesForm extends Component {
         </label>
 
         <button
-          type="submit"
-          onClick={ this.submitExpenses }
+          type="button"
+          onClick={ () => this.submitExpenses() }
         >
           Adicionar despesa
         </button>
@@ -135,17 +146,28 @@ class ExpensesForm extends Component {
 
 const mapStateToProps = (state) => ({
   currencies: state.wallet.currencies,
+  data: state.wallet.data,
+
 });
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchFormValues: (payload) => dispatch(setExpensesAction(payload)),
+  fetchCurrencyData: () => dispatch(fetchCurrencyKeys()),
 });
 
 ExpensesForm.propTypes = {
   dispatchFormValues: PropTypes.func.isRequired,
+  fetchCurrencyData: PropTypes.func.isRequired,
   currencies: PropTypes.arrayOf(
     PropTypes.string.isRequired,
   ).isRequired,
+  data: PropTypes.objectOf(
+    PropTypes.object.isRequired,
+  ),
+};
+
+ExpensesForm.defaultProps = {
+  data: {},
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExpensesForm);

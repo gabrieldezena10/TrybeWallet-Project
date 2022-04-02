@@ -7,12 +7,13 @@ export const SET_EXPENSES = 'SET_EXPENSES';
 
 export const saveLoginAction = (payload) => ({ type: SAVE_LOGIN, payload });
 export const requestCurrencyAPI = () => ({ type: REQUEST_CURRENCY });
-export const getCurrency = (payload) => ({ type: GET_CURRENCY, payload });
+export const getCurrency = (keys, data) => ({ type: GET_CURRENCY, keys, data });
 
 export const fetchCurrencyKeys = () => async (dispatch) => {
   dispatch(requestCurrencyAPI());
   const currenciesData = await getData();
-  dispatch(getCurrency(currenciesData));
+  const keyCurrencies = Object.keys(currenciesData);
+  dispatch(getCurrency(keyCurrencies, currenciesData));
 };
 
-export const setExpensesAction = (expenses) => ({ type: SET_EXPENSES, expenses });
+export const setExpensesAction = (payload) => ({ type: SET_EXPENSES, payload });

@@ -17,14 +17,15 @@ const wallet = (state = INITIAL_STATE, action) => {
   case GET_CURRENCY:
     return {
       ...state,
-      currencies: action.payload,
+      currencies: action.keys,
+      data: action.data,
       loading: false,
     };
 
   case SET_EXPENSES:
     return {
       ...state,
-      expenses: [...state.expenses, action.expenses],
+      expenses: [...state.expenses, action.payload],
     };
   default:
     return state;
