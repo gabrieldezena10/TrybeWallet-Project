@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { removeExpenses } from '../actions';
+import ExpensesTableStyle from './ExpensesTableStyle';
 
 class ExpensesTable extends Component {
  deleteExpense = (keyId) => {
@@ -13,8 +14,8 @@ class ExpensesTable extends Component {
  render() {
    const { expenses } = this.props;
    return (
-     <table>
-       <thead>
+     <ExpensesTableStyle>
+       <thead className="table-header">
          <tr>
            <th>Descrição</th>
            <th>Valor</th>
@@ -29,7 +30,7 @@ class ExpensesTable extends Component {
        </thead>
        <tbody>
          {expenses.map((expense) => (
-           <tr key={ expense.id }>
+           <tr key={ expense.id } className="table-row">
              <td>{expense.description}</td>
              <td>{parseFloat(expense.value).toFixed(2)}</td>
              <td>{expense.exchangeRates[expense.currency].name}</td>
@@ -51,13 +52,12 @@ class ExpensesTable extends Component {
                >
                  Excluir
                </button>
-
              </td>
 
            </tr>
          ))}
        </tbody>
-     </table>
+     </ExpensesTableStyle>
    );
  }
 }

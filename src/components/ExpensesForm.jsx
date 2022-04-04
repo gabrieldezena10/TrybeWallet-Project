@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { setExpensesAction, fetchCurrencyKeys } from '../actions/index';
+import ExpensesFormStyle from './ExpensesFormStyle';
 
 class ExpensesForm extends Component {
   constructor() {
@@ -47,7 +48,7 @@ class ExpensesForm extends Component {
     const payments = ['Dinheiro', 'Cartão de crédito', 'Cartão de débito'];
     const expensesCat = ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'];
     return (
-      <form>
+      <ExpensesFormStyle>
         <label htmlFor="currency-value">
           Valor
           <input
@@ -139,7 +140,7 @@ class ExpensesForm extends Component {
         >
           Adicionar despesa
         </button>
-      </form>
+      </ExpensesFormStyle>
     );
   }
 }

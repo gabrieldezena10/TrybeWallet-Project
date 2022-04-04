@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { saveLoginAction } from '../actions/index';
+import LoginStyle from './LoginStyle';
 
 class Login extends React.Component {
   constructor() {
@@ -43,7 +44,7 @@ class Login extends React.Component {
     const { email, password } = this.state;
 
     return (
-      <section>
+      <LoginStyle>
         <div>Login</div>
         <input
           data-testid="email-input"
@@ -68,7 +69,7 @@ class Login extends React.Component {
         >
           Entrar
         </button>
-      </section>
+      </LoginStyle>
     );
   }
 }
